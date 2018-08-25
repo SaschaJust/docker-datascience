@@ -30,12 +30,14 @@ RUN ln -fs /opt/julia-*/bin/julia /usr/local/bin/julia
 RUN mkdir /etc/julia && \
     echo "push!(Libdl.DL_LOAD_PATH, \"$CONDA_DIR/lib\")" >> /etc/julia/juliarc.jl && \
     # Create JULIA_PKGDIR \
-    mkdir $JULIA_PKGDIR && \
-    chown $NB_USER $JULIA_PKGDIR
+    mkdir $JULIA_PKGDIR  
 
 USER $NB_UID
 
-RUN conda config --add channels r
+# https://github.com/jupyter/docker-stacks/pull/499
+# https://github.com/jupyter/docker-stacks/issues/497
+RUN conda config --append channels r
+RUN conda config --prepend channels conda-forge
 
 RUN conda install --quiet --yes \
     'python>=3.6.6' \
@@ -238,14 +240,10 @@ RUN set -xe && \
     mix deps.get && \
     mix local.rebar --forcea && \
     mix deps.compile && \
-    ./install_script.sh \
-    chown $NB_USER /opt/ielixir-${IELIXIR_VERSION}
+    ./install_script.sh 
 
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Fix Permissions for directories like .local and .mix
-USER root
-RUN chown -R $NB_USER:users /home/$NB_USER
-
+RUN chown -R $NB_USER:users /home/$NB_USER /opt/ielixir-*
 USER $NB_UID
