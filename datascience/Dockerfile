@@ -246,6 +246,6 @@ RUN apt-get clean && \
 
 # Fix Permissions for directories like .local and .mix
 USER root
-RUN chown -R $NB_USER:users /home/$NB_USER
+RUN chown -R $NB_USER:users /home/$NB_USER /opt/ielixir-*
 
 USER $NB_UID
