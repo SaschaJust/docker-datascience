@@ -244,4 +244,8 @@ RUN set -xe && \
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Fix Permissions for directories like .local and .mix
+USER root
+RUN chown -R $NB_USER:users /home/$NB_USER
+
 USER $NB_UID
