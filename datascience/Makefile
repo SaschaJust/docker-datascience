@@ -10,7 +10,7 @@ all: $(tag)
 # Build the docker image
 $(tag): Dockerfile check-env
 	$(info Building image with tag $(tag))
-	@docker build -t $(tag) .
+	@docker build -t $(tag) --squash .
 
 # Deploy the image to docker.io
 push: $(tag)
