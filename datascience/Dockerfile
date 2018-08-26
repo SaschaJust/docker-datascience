@@ -14,9 +14,9 @@ RUN apt-get update && \
 
 # Julia dependencies
 # install Julia packages in /opt/julia instead of $HOME
-ENV JULIA_PKGDIR=/opt/julia
-ENV JULIA_VERSION=1.0.0
-ENV JULIA_CHECKSUM=bea4570d7358016d8ed29d2c15787dbefaea3e746c570763e7ad6040f17831f3
+ENV JULIA_PKGDIR=/opt/julia \
+    JULIA_VERSION=1.0.0 \
+    JULIA_CHECKSUM=bea4570d7358016d8ed29d2c15787dbefaea3e746c570763e7ad6040f17831f3
 
 RUN mkdir /opt/julia-${JULIA_VERSION} && \
     cd /tmp && \
@@ -33,11 +33,6 @@ RUN mkdir /etc/julia && \
     mkdir $JULIA_PKGDIR
 
 USER $NB_UID
-
-# https://github.com/jupyter/docker-stacks/pull/499
-# https://github.com/jupyter/docker-stacks/issues/497
-RUN conda config --append channels r
-RUN conda config --prepend channels conda-forge
 
 RUN conda install --quiet --yes \
     'python>=3.6.6' \
@@ -98,14 +93,8 @@ RUN conda install --quiet --yes \
     'vincent=0.4.*' \
     'beautifulsoup4=4.6.*' \
     'protobuf=3.*' \
-    'xlrd' \
-    'jupyter_nbextensions_configurator=0.4*' \
-    'jupyter_contrib_nbextensions=0.5*' && \
+    'xlrd' && \
     conda clean -tipsy
-
-RUN jupyter contrib nbextension install --user && jupyter nbextensions_configurator enable --user
-
-RUN jt -t grade3 -altp -altmd -fs 13 -tfs 13 -nfs 13 -ofs 10 -cellw 90% -T -nf opensans -f firacode
 
 # Add Julia packages. Only add HDF5 if this is not a test-only build since
 # it takes roughly half the entire build time of all of the images on Travis
@@ -240,10 +229,12 @@ RUN set -xe && \
     mix deps.get && \
     mix local.rebar --forcea && \
     mix deps.compile && \
-    ./install_script.sh
+    ./install_script.sh && \
+    chown -R $NB_USER:users /opt/ielixir-*
 
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN chown -R $NB_USER:users /home/$NB_USER /opt/ielixir-*
+RUN chown -R $NB_USER:users /home/$NB_USER
+
 USER $NB_UID

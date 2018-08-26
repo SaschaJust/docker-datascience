@@ -11,7 +11,7 @@ all: $(tag)
 # Build the docker image
 $(tag): Dockerfile check-env
 	$(info Building image with tag $(tag))
-	@docker build --build-arg JUPYTER_TOKEN=$(JUPYTER_TOKEN) -t $(tag) .
+	@docker build --build-arg JUPYTER_TOKEN=$(JUPYTER_TOKEN) --squash -t $(tag) .
 
 # Deploy the image to docker.io
 push: $(tag)

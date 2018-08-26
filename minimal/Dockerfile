@@ -67,6 +67,9 @@ RUN cd /tmp && \
     echo "a946ea1d0c4a642ddf0c3a26a18bb16d *Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh" | md5sum -c - && \
     /bin/bash Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh -f -b -p $CONDA_DIR && \
     rm Miniconda3-${MINICONDA_VERSION}-Linux-x86_64.sh && \
+    # https://github.com/jupyter/docker-stacks/pull/499 \
+    # https://github.com/jupyter/docker-stacks/issues/497 \
+    $CONDA_DIR/bin/conda config --system --append channels r && \
     $CONDA_DIR/bin/conda config --system --prepend channels conda-forge && \
     $CONDA_DIR/bin/conda config --system --set auto_update_conda false && \
     $CONDA_DIR/bin/conda config --system --set show_channel_urls true && \
@@ -85,9 +88,14 @@ RUN set -xe \
     'notebook=5.6.*' \
     'jupyterhub=0.9.*' \
     'jupyterlab=0.34.*' \
-    'jupyterthemes>=0.19.6' \
     'jupyter_nbextensions_configurator=0.4*' \
     'jupyter_contrib_nbextensions=0.5*' \
+    && wget --quiet https://github.com/SaschaJust/jupyter-themes/archive/master.tar.gz \
+    && tar xzf master.tar.gz \
+    && cd jupyter-themes-master \
+    && python setup.py install \
+    && cd .. \
+    && rm -rf jupyter-themes \
     && conda clean -tipsy \
     && jupyter labextension install @jupyterlab/hub-extension \
     && jupyter notebook --generate-config \
@@ -101,9 +109,9 @@ RUN set -xe \
 # install jupyter notebook extensions
 RUN jupyter contrib nbextension install --user && jupyter nbextensions_configurator enable --user
 # set jupyter theme
-RUN jt -t grade3 -altp -altmd -fs 13 -tfs 13 -nfs 13 -ofs 10 -cellw 90% -T -nf opensans -f firacode
+RUN jt -t monokai -altp -altmd -fs 13 -tfs 13 -nfs 13 -ofs 10 -cellw 90% -T -nf firasans -f firacode
 
 # Make port 8888 available to the world outside this containerENTRYPOINT ["tini", "-g", "--"]
 ENTRYPOINT ["tini", "-g", "--"]
 EXPOSE 8888
-CMD jupyter lab --ip=* --port=8888 --no-browser --notebook-dir=/home/$NB_USER --allow-root
+CMD jupyter lab --ip=* --port=8888 --no-browser --notebook-dir=/home/$NB_USER --allow-root --NotebookApp.token=${JUPYTER_TOKEN}
