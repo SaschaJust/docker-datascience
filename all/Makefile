@@ -1,5 +1,5 @@
 repository = nicbet
-image = datascience-base
+image = datascience-all
 tag = $(repository)/$(image)
 
 all: $(tag)

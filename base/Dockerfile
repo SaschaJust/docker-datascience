@@ -35,7 +35,7 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
 #______________________________________________________________________________________________________
-# Create jovyan user with UID=1000 and in the 'users' group
+# Create datascience user with UID=1000 and in the 'users' group
 # and make sure these dirs are writable by the `users` group.
 USER root
 WORKDIR /root
@@ -143,12 +143,13 @@ USER root
 WORKDIR /tmp
 RUN apt install -y python3 \
  && apt install -y python3-pip \
- && pip3 install virtualenv virtualenvwrapper
+ && pip3 install virtualenv virtualenvwrapper jupyterlab numpy pandas matplotlib
 
 
 #______________________________________________________________________________________________________
 # Entrypoint
 USER $NB_UID
 WORKDIR $HOME
+EXPOSE 8888
 CMD ["/bin/bash", "--login"]
 
