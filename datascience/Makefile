@@ -1,4 +1,4 @@
-repository = sjust
+repository = nicbet
 image = jupyter-datascience
 tag = $(repository)/$(image)
 

@@ -1,0 +1,20 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+HOST	datascience/Makefile	/^HOST = localhost$/;"	m
+HOST	jupyter-based/Makefile	/^HOST = localhost$/;"	m
+HOST	minimal/Makefile	/^HOST = localhost$/;"	m
+JUPYTER_TOKEN	jupyter-based/Makefile	/^JUPYTER_TOKEN=84a471ab58d5dbe8c23455b5b6a92f143cc871b1674a5457d83cbb377d06b18c$/;"	m
+JUPYTER_TOKEN	minimal/Makefile	/^JUPYTER_TOKEN=84a471ab58d5dbe8c23455b5b6a92f143cc871b1674a5457d83cbb377d06b18c$/;"	m
+image	datascience/Makefile	/^image = jupyter-datascience$/;"	m
+image	jupyter-based/Makefile	/^image = jupyter-all$/;"	m
+image	minimal/Makefile	/^image = jupyter-minimal$/;"	m
+repository	datascience/Makefile	/^repository = nicbet$/;"	m
+repository	jupyter-based/Makefile	/^repository = sjust$/;"	m
+repository	minimal/Makefile	/^repository = sjust$/;"	m
+tag	datascience/Makefile	/^tag = $(repository)\/$(image)$/;"	m
+tag	jupyter-based/Makefile	/^tag = $(repository)\/$(image)$/;"	m
+tag	minimal/Makefile	/^tag = $(repository)\/$(image)$/;"	m
