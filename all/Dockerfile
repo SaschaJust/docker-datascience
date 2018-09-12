@@ -29,6 +29,7 @@ RUN pip3 install numpy pandas matplotlib seaborn scipy statsmodels plotly bokeh 
 USER root
 WORKDIR /tmp
 RUN echo 'install.packages("devtools")' | R --no-save \
+ && echo "install.packages(c('repr', 'IRdisplay', 'crayon', 'pbdZMQ'))" | R --no-save \
  && echo 'devtools::install_github("IRkernel/IRkernel")' | R --no-save \
  && echo 'IRkernel::installspec(user = FALSE)' | R --no-save \
  && echo 'install.packages("rstan", repos = "https://cloud.r-project.org/", dependencies=TRUE)' | R --no-save \
