@@ -1,5 +1,5 @@
 repository = nicbet
-image = jupyter-datascience
+image = datascience-base
 tag = $(repository)/$(image)
 
 all: $(tag)
@@ -27,6 +27,9 @@ mrproper: clean
 	$(info Removing images for tag $(tag) and pruning related images.)
 	-docker rmi $(tag) >/dev/null 2>&1
 	-docker rmi $(shell docker images -a --filter=dangling=true -q) >/dev/null 2>&1
+
+run:
+	@docker run --rm -it -p 8888:8888 -v $(pwd):/home/datascience/work $(tag)
 
 # Check environment variables
 check-env:
